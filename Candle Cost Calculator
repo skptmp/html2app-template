@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Candle Cost Calculator - Flamystery</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: url('https://plus.unsplash.com/premium_photo-1681412205107-82801c18ab6c?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 700px;
+      box-sizing: border-box;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffe4c4;
+      text-shadow: 1px 1px 3px #000;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    label, select, input, button {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      box-sizing: border-box;
+    }
+
+    select, input {
+      background: rgba(255, 255, 255, 0.85);
+      color: #000;
+    }
+
+    button {
+      background-color: #ff9900;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #e38e00;
+      transform: scale(1.02);
+    }
+
+    .result {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-top: 20px;
+      text-align: center;
+      color: #ffffcc;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .details {
+      margin-top: 10px;
+      font-size: 1rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .flame {
+      font-size: 2rem;
+      animation: flicker 1s infinite alternate ease-in-out;
+      text-align: center;
+    }
+
+    .refresh-btn {
+      margin-top: 30px;
+      background-color: #666;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      padding: 12px 20px;
+      cursor: pointer;
+    }
+
+    .refresh-btn:hover {
+      background-color: #444;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0.5; transform: scale(1.05); }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.6rem;
+      }
+      label, select, input, button {
+        font-size: 0.95rem;
+      }
+      .result {
+        font-size: 1.2rem;
+      }
+      .details {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      .container {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 1.4rem;
+      }
+      .flame {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (min-width: 1600px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      label, select, input, button {
+        font-size: 1.2rem;
+      }
+      .result {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="flame">🕯️</div>
+    <h1>Candle Cost Calculator</h1>
+    <form id="calcForm">
+      <label for="totalWeight">Total Candle Weight (g)</label>
+      <input type="number" id="totalWeight" placeholder="e.g., 250">
+
+      <label for="waxType">Wax Type</label>
+      <select id="waxType">
+        <option value="Soy Wax Only">Soy Wax Only</option>
+        <option value="Soy+Coconut">Soy + Coconut Wax (75:25)</option>
+        <option value="Coconut Wax (5kg)">Coconut Wax Only</option>
+        <option value="Gel Wax (10kg)">Gel Wax</option>
+        <option value="Soy Wax Pearl (1kg)">Soy Wax Pearl</option>
+      </select>
+
+      <label for="fragranceType">Fragrance Oil</label>
+      <select id="fragranceType">
+        <option value="None">No Fragrance</option>
+        <option value="Rose">Rose</option>
+        <option value="Strawberry Lush">Strawberry Lush</option>
+        <option value="Orange Vanilla">Orange Vanilla</option>
+        <option value="Diced Pineapple">Diced Pineapple</option>
+        <option value="Cherry Blossom">Cherry Blossom</option>
+        <option value="Masala Chai">Masala Chai</option>
+        <option value="Mango Punch">Mango Punch</option>
+        <option value="Hazelnut Coffee">Hazelnut Coffee</option>
+        <option value="Morning Flower">Morning Flower</option>
+        <option value="Bubble Gum">Bubble Gum</option>
+        <option value="Vanilla SPC">Vanilla SPC</option>
+        <option value="Mountain Cedar">Mountain Cedar</option>
+        <option value="Aqua Fresh">Aqua Fresh</option>
+      </select>
+
+      <label for="useColor">Use Color Pigment?</label>
+      <select id="useColor">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+
+      <label for="wickType">Wick Type</label>
+      <select id="wickType">
+        <option value="Wooden Wick">Wooden Wick</option>
+        <option value="Cotton Wax Coated Wick">Cotton Wax Coated Wick</option>
+        <option value="Braided Wax Coated Wick">Braided Wax Coated Wick</option>
+        <option value="Braided Wick (cut from Roll)">Braided Wick (cut from Roll)</option>
+      </select>
+
+      <label for="wickQty">Wick Quantity</label>
+      <input type="number" id="wickQty" placeholder="e.g., 1">
+
+      <label for="extraCost">Extra Cost (₹)</label>
+      <input type="text" id="extraCost" placeholder="e.g., 2+3">
+
+      <button type="submit">✨ Calculate Total Cost ✨</button>
+    </form>
+    <div class="result" id="result">Total Cost: ₹0.00</div>
+    <div class="details" id="breakdown"></div>
+  </div>
+
+  <button class="refresh-btn" onclick="window.location.reload()">🔄 Refresh</button>
+
+  <script>
+    const inputsToWatch = [
+      'totalWeight', 'waxType', 'fragranceType', 'useColor', 'wickType', 'wickQty', 'extraCost'
+    ];
+
+    const waxRates = {
+      "Soy Wax Only": 0.20,
+      "Soy+Coconut": 0.20 * 0.75 + 0.46 * 0.25,
+      "Coconut Wax (5kg)": 0.46,
+      "Gel Wax (10kg)": 0.28,
+      "Soy Wax Pearl (1kg)": 0.25
+    };
+
+    const fragranceRates = {
+      "Rose": 1.80,
+      "Strawberry Lush": 1.56,
+      "Orange Vanilla": 1.43,
+      "Diced Pineapple": 1.17,
+      "Cherry Blossom": 0.95,
+      "Masala Chai": 1.56,
+      "Mango Punch": 1.89,
+      "Hazelnut Coffee": 1.36,
+      "Morning Flower": 0.91,
+      "Bubble Gum": 1.50,
+      "Vanilla SPC": 1.20,
+      "Mountain Cedar": 1.49,
+      "Aqua Fresh": 2.60
+    };
+
+    const colorRates = {
+      "Basic Pigment": 1.67
+    };
+
+    const wickRates = {
+      "Wooden Wick": 13.29,
+      "Cotton Wax Coated Wick": 0.94,
+      "Braided Wax Coated Wick": 2.99,
+      "Braided Wick (cut from Roll)": 0.36
+    };
+
+    function calculateCost() {
+      const totalWeight = parseFloat(document.getElementById('totalWeight').value);
+      const fragranceType = document.getElementById('fragranceType').value;
+      const useColor = document.getElementById('useColor').value;
+      const waxType = document.getElementById('waxType').value;
+      const wickType = document.getElementById('wickType').value;
+      let wickQtyRaw = document.getElementById('wickQty').value;
+      const wickQty = wickQtyRaw === '' ? 1 : Math.max(0, parseInt(wickQtyRaw));
+
+      let extraInput = document.getElementById('extraCost').value.trim();
+      let extra = 0;
+      try {
+        if (extraInput !== '') {
+          const sanitized = extraInput.replace(/[^0-9.+\-*/() ]/g, '');
+          extra = Function(`'use strict'; return (${sanitized})`)();
+          if (typeof extra !== 'number' || isNaN(extra)) extra = 0;
+        }
+      } catch (e) {
+        console.error('Invalid expression in Extra Cost:', e);
+        extra = 0;
+      }
+
+      if (!totalWeight || totalWeight <= 0 || wickQty < 0) {
+        document.getElementById('result').innerText = 'Please enter valid values.';
+        document.getElementById('breakdown').innerHTML = '';
+        return;
+      }
+
+      const fragranceQty = (fragranceType === 'None') ? 0 : totalWeight * 0.08;
+      const colorQty = (useColor === 'yes') ? totalWeight * 0.01 : 0;
+      const waxWeight = totalWeight - fragranceQty - colorQty;
+
+      let soyPart = 0, coconutPart = 0;
+      if (waxType === "Soy+Coconut") {
+        soyPart = waxWeight * 0.75;
+        coconutPart = waxWeight * 0.25;
+      }
+
+      const waxCost = (waxRates[waxType] || 0) * waxWeight;
+      const fragranceCost = (fragranceType === 'None') ? 0 : (fragranceRates[fragranceType] || 0) * fragranceQty;
+      const colorCost = (useColor === 'yes') ? (colorRates["Basic Pigment"] * colorQty) : 0;
+      const wickCost = (wickRates[wickType] || 0) * wickQty;
+
+      const total = waxCost + fragranceCost + colorCost + wickCost + extra;
+      document.getElementById('result').innerText = `🕯️ Total Cost: ₹${total.toFixed(2)}`;
+
+      let breakdownHTML = `<strong>🧾 Breakdown:</strong><br>`;
+
+      if (waxType === "Soy+Coconut") {
+        breakdownHTML += `Soy Wax: ${soyPart.toFixed(2)} g<br>Coconut Wax: ${coconutPart.toFixed(2)} g<br>`;
+      } else {
+        breakdownHTML += `${waxType.replace(/ \(.*/, '')}: ${waxWeight.toFixed(2)} g<br>`;
+      }
+
+      if (fragranceQty > 0) breakdownHTML += `Fragrance Oil: ${fragranceQty.toFixed(2)} g<br>`;
+      if (colorQty > 0) breakdownHTML += `Color Pigment: ${colorQty.toFixed(2)} g<br>`;
+
+      document.getElementById('breakdown').innerHTML = breakdownHTML;
+    }
+
+    document.getElementById('calcForm').addEventListener('submit', e => {
+      e.preventDefault();
+      calculateCost();
+    });
+
+    inputsToWatch.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', calculateCost);
+    });
+  </script>
+</body>
+</html>
